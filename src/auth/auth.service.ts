@@ -8,7 +8,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { JwtService } from '@nestjs/jwt';
 import { compareHash } from 'src/utils/helpers';
 import { ValidateUserDetails } from 'src/utils/types';
-import { UserService } from 'src/user/user.service';
+import { UserService } from 'src/users/user.service';
 import { RegisterDto } from './dtos';
 
 @Injectable()

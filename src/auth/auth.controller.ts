@@ -6,12 +6,13 @@ import {
   Request,
   Get,
 } from '@nestjs/common';
-import { API_BASE } from 'src/utils/constants';
+import { Routes } from 'src/utils/constants';
+import { AuthenticatedRequest } from 'src/utils/types';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dtos';
 import { JwtAuthGuard, LocalAuthGuard } from './guards';
 
-@Controller(`${API_BASE}/auth`)
+@Controller(Routes.AUTH)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -28,7 +29,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  getProfile(@Request() req: Request & { user: any }) {
+  getProfile(@Request() req: AuthenticatedRequest) {
     return req.user;
   }
 }
