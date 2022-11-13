@@ -4,6 +4,7 @@ enum LocalRoutes {
   AUTH = 'auth',
   USERS = 'users',
   CATEGORIES = 'categories',
+  PASSWORDS = 'passwords',
 }
 
 export const Routes = new Proxy(LocalRoutes, {

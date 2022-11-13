@@ -7,21 +7,24 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { JwtService } from '@nestjs/jwt';
 import { compareHash } from 'src/utils/helpers';
-import { ValidateUserDetails } from 'src/utils/types';
-import { UserService } from 'src/users/user.service';
 import { RegisterDto } from './dtos';
+import { CategoriesService } from 'src/categories/categories.service';
+import { UsersService } from 'src/users/user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
-    private jwtService: JwtService,
-    private readonly userService: UserService,
+    private readonly usersService: UsersService,
+    private readonly categoriesService: CategoriesService,
+    private readonly jwtService: JwtService,
   ) {}
 
   async register(registerDto: RegisterDto) {
     try {
-      return this.userService.createUser(registerDto);
+      const user = await this.usersService.createUser(registerDto);
+      await this.categoriesService.create({ name: 'Default' }, user.id);
+      return user;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
@@ -30,6 +33,7 @@ export class AuthService {
           );
         }
       }
+      throw error;
     }
   }
 

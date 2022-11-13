@@ -10,7 +10,7 @@ import { Routes } from 'src/utils/constants';
 import { AuthenticatedRequest } from 'src/utils/types';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dtos';
-import { JwtAuthGuard, LocalAuthGuard } from './guards';
+import { LocalAuthGuard } from './guards';
 
 @Controller(Routes.AUTH)
 export class AuthController {
@@ -18,18 +18,12 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  login(@Request() req: Request & { user: any }) {
+  login(@Request() req: AuthenticatedRequest) {
     return this.authService.login(req.user);
   }
 
   @Post('register')
   register(@Body() signUpDto: RegisterDto) {
     return this.authService.register(signUpDto);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('me')
-  getProfile(@Request() req: AuthenticatedRequest) {
-    return req.user;
   }
 }

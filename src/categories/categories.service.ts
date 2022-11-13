@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { NotFoundError } from '@prisma/client/runtime';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateCategoryDto, UpdateCategoryDto } from './dtos';
 
@@ -26,6 +25,9 @@ export class CategoriesService {
     return this.prisma.category.findMany({
       where: {
         userId,
+      },
+      include: {
+        passwords: true,
       },
     });
   }

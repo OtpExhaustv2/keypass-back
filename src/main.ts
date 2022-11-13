@@ -6,7 +6,7 @@ import { NotFoundExceptionFilter } from './utils/filters';
 import { NumberParamsCastingInterceptor } from './utils/interceptors';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   app.useGlobalFilters(new NotFoundExceptionFilter());
   app.useGlobalPipes(
     new ValidationPipe({
